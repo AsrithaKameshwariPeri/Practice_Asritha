@@ -12,7 +12,7 @@ def fail(score):
 
 @app.route('/results/<int:marks>')
 def results(marks):
-    result = "fail" if marks < 50 else "success"
+    result = "fail" if marks < 60 else "success"
     return redirect(url_for(result, score=marks))
 
 @app.route('/submit', methods=['POST', 'GET'])
