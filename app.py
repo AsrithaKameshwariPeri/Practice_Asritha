@@ -1,30 +1,34 @@
-from flask import Flask, request, url_for, redirect, render_template
+from flask import Flask, request, redirect
+from flask.templating import render_template
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.debug = True
 
-@app.route('/success/<int:score>')
-def success(score):
-    return render_template('result.html', result="PASS", score=score)
+# adding configuration for using a sqlite database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-@app.route('/fail/<int:score>')
-def fail(score):
-    return render_template('result.html', result="FAIL", score=score)
+# Creating an SQLAlchemy instance
+db = SQLAlchemy(app)
 
-@app.route('/results/<int:marks>')
-def results(marks):
-    result = "fail" if marks < 60 else "success"
-    return redirect(url_for(result, score=marks))
+# Models
+class Profile(db.Model):
+    # Id : Field which stores unique id for every row in 
+    # database table.
+    # first_name: Used to store the first name if the user
+    # last_name: Used to store last name of the user
+    # Age: Used to store the age of the user
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(20), unique=False, nullable=False)
+    last_name = db.Column(db.String(20), unique=False, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
 
-@app.route('/submit', methods=['POST', 'GET'])
-def submit():
-    if request.method == 'POST':
-        science = float(request.form['science'])
-        maths = float(request.form['maths'])
-        c_programming = float(request.form['c_programming'])
-        total_score = (science + maths + c_programming) / 3
-        result = "fail" if total_score < 50 else "success"
-        return redirect(url_for(result, score=total_score))
-    return render_template('index.html')
+    # repr method represents how one object of this datatable
+    # will look like
+    def __repr__(self):
+        return f"Name : {self.first_name}, Age: {self.age}"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    db.create_all()
+    app.run()

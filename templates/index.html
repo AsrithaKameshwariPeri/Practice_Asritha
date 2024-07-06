@@ -2,59 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Submit Scores</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        form {
-            display: inline-block;
-            text-align: left;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #fff;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            color: white;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Update Form</title>
 </head>
 <body>
-    <h1>Submit Your Scores</h1>
-    <form action="{{ url_for('submit') }}" method="post">
-        <label for="science">Science:</label>
-        <input type="text" id="science" name="science" value="0" required>
-        
-        <label for="maths">Maths:</label>
-        <input type="text" id="maths" name="maths" value="0" required>
-        
-        <label for="c_programming">C Programming:</label>
-        <input type="text" id="c_programming" name="c_programming" value="0" required>
-        
-        <button type="submit">Submit</button>
+    <h1>Update it in the form below:</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.breed.label }} {{ form.breed }}
+        <br>
+        {{ form.neutered.label }} {{ form.neutered }}
+        <br>
+        {{ form.mood.label }} {{ form.mood }}
+        <br>
+        {{ form.food_choice.label }} {{ form.food_choice }}
+        <br>
+        Any other feedback?
+        <br>
+        {{ form.feedback }}
+        <br>
+        {{ form.submit() }}
     </form>
 </body>
 </html>
